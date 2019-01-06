@@ -33,11 +33,21 @@ namespace Mack.Club.SkyGrass.AutoGoodNight.MahuaEvents
                 ulong from_group = Convert.ToUInt64(context.FromGroup);
                 ulong add_time = Convert.ToUInt64(UnixTimestamp.GetTimeStampLong());
 
+                string nick_name = string.Empty;
+                try
+                {
+                    nick_name = _mahuaApi.GetGroupMemberInfo(context.FromGroup, context.FromQq).NickName;
+                }
+                catch
+                {
+                    nick_name = from_qq.ToString();
+                }
+
                 AutoGoodNightLogCache cache = new AutoGoodNightLogCache();
 
                 cache.Init(dbConnString);
 
-                cache.InsertLog(from_qq, from_group, message, add_time);                
+                cache.InsertLog(from_qq, from_group, message, add_time, nick_name);
             }
         }
     }    
